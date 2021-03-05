@@ -8,6 +8,9 @@ cat << EOF > ~/.vimrc
 let s:config_home=expand('~/.vim_runtime/')
 execute 'set runtimepath+=' . s:config_home
 
+" Check python provider
+source ~/.vim_runtime/vimrcs/provider-python.vim
+
 " Load plugins
 source ~/.vim_runtime/vimrcs/plugins.vim
 
