@@ -210,9 +210,9 @@ endtry
 inoremap <expr> <CR> (pumvisible() ? "\<C-y>\<CR>" : "\<CR>")
 
 " Use <Tab> or <C-Space> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <C-Space> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " ncm2-ultisnips --------------------------------------------------------------
 " Press enter key to trigger snippet expansion
@@ -318,7 +318,6 @@ autocmd VimEnter *
   \ | execute "nnoremap <silent> Q     :Bdelete menu<CR>"
   \ | execute "nnoremap <silent> <C-q> :Bdelete menu<CR>"
   \ | execute "nnoremap <leader>bo :Bdelete hidden<CR>"
-  \ | execute "nnoremap <leader>bd :Bclose<CR>"
   \ | endif
 
 " lightline.vim ---------------------------------------------------------------
@@ -343,21 +342,35 @@ let g:lightline = {
       \   'fugitive': '%{exists("*fugitive#head")?" ".fugitive#head():""}',
       \   'zoomstatus': '%{exists("*zoom#statusline")&&(zoom#statusline()=="zoomed")?"ZOOMED":""}',
       \   'indicator': '%{exists("*LineNoIndicator")?LineNoIndicator():""}',
-      \   'venv': '%{exists("*virtualenv#statusline")&&(""!=virtualenv#statusline())?" ".virtualenv#statusline():""}',
+      \   'venv': '%{exists("*poetv#statusline")&&(""!=poetv#statusline())?" ".poetv#statusline():""}',
+      \   'lineinfo': '%3l:%-2v%<',
       \ },
       \ 'component_visible_condition': {
       \   'readonly': '(&filetype!="help"&& &readonly)',
       \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
       \   'zoomstatus': '(exists("*zoom#statusline") && (zoom#statusline()!="zoomed"))',
-      \   'indicator': '(exists("*LineNoIndicator") && ""!=virtualenv#statusline())',
+      \   'indicator': '(exists("*LineNoIndicator") && ""!=LineNoIndicator())',
       \ },
       \ 'component_function': {
       \   'githunks': 'LightlineGitGutter',
       \   'filename': 'LightlineFilename',
       \ },
       \ 'separator': { 'left': ' ', 'right': ' ' },
-      \ 'subseparator': { 'left': '', 'right': '|' }
+      \ 'subseparator': { 'left': '', 'right': '|' },
+      \ 'mode_map': {
+      \   'n' : 'N',
+      \   'i' : 'I',
+      \   'R' : 'R',
+      \   'v' : 'V',
+      \   'V' : 'VL',
+      \   "\<C-v>": 'VB',
+      \   'c' : 'C',
+      \   's' : 'S',
+      \   'S' : 'SL',
+      \   "\<C-s>": 'SB',
+      \   't': 'T',
+      \   },
       \ }
 
 let g:lightline.component_expand = {
@@ -543,11 +556,12 @@ else
   let g:jedi#completions_enabled = 1
 endif
 
-let g:jedi#popup_on_dot = 1
 let g:jedi#auto_initialization = 1
 let g:jedi#auto_vim_configuration = 0
-let g:jedi#smart_auto_mappings = 0
+let g:jedi#popup_on_dot = 1
 let g:jedi#show_call_signatures = "1"
+let g:jedi#smart_auto_mappings = 0
+let g:jedi#use_splits_not_buffers = "bottom"
 
 let g:jedi#goto_command = "<leader>gd"
 let g:jedi#goto_assignments_command = "<leader>ga"
@@ -883,6 +897,27 @@ autocmd VimEnter *
 
 " romainl/vim-cool ------------------------------------------------------------
 let g:CoolTotalMatches = 1
+
+" numirias/semshi -------------------------------------------------------------
+" Use Gruvbox colors for python semshi semantic highlighter
+" Custom highlighting
+function! SemshiHighlights() abort
+  " hi semshiGlobal          ctermfg=167 guifg=#fb4934
+  hi semshiImported        ctermfg=214 guifg=#fabd2f cterm=bold gui=bold
+  hi semshiParameter       ctermfg=142  guifg=#98971a
+  hi semshiParameterUnused cterm=underline ctermfg=106 gui=underline guifg=#665c54
+  hi semshiBuiltin         ctermfg=208 guifg=#fe8019
+  hi semshiAttribute       ctermfg=108  guifg=fg
+  hi semshiSelf            ctermfg=109 guifg=#85a598
+  " hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=161 guibg=#d7005f
+endfunction
+
+augroup SemshiColors
+  autocmd!
+  autocmd ColorScheme * call SemshiHighlights()
+augroup END
+
+let g:semshi#excluded_hl_groups = ['local', 'imported']
 
 " garbas/vim-snipmate ---------------------------------------------------------
 " inoremap <C-j> <C-r>=snipMate#TriggerSnippet()<cr>

@@ -469,20 +469,22 @@ nnoremap <S-TAB> :bprevious<CR>
 vnoremap <S-TAB> :<C-u>bprevious<CR>
 
 " Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Close all the buffers
-map <leader>ba :bufdo bd<cr>
+nnoremap <leader>ba :bufdo bd<cr>
+
+" Close current buffer and close the window split
+nnoremap <leader>bd :bd<CR>
 
 """ Close a buffer without closing the window?
 " https://stackoverflow.com/a/19619038/3744499
 " (Close the current buffer and move to the alternative one)
-autocmd VimEnter *
-  \ if exists(':Bclose')
-  \ | execute "nnoremap <leader>bd :Bclose<CR>"
-  \ | else
-  \ | execute "nnoremap <leader>bd :b#<bar>bd#<CR>"
-  \ | endif
+if exists(':Bclose')
+  nnoremap <localleader>bc :Bclose<CR>
+else
+  nnoremap <localleader>bc :b#<bar>bd#<CR>
+endif
 
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
@@ -666,7 +668,7 @@ map <leader>s? z=
 noremap <leader>mm mmHmt:%s/<C-v><CR>//ge<CR>'tzt'm
 
 """ Spellcheck
-nnoremap <leader>sc setlocal spell!
+nnoremap <leader>sc :setlocal spell!<CR>
 
 """ Show marks list and goto
 nnoremap <leader>gm :<C-u>marks<CR>:normal! `
@@ -683,6 +685,20 @@ map <leader>om :e /tmp/buffer.md<cr>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
+""" Fix gx in opening URLs
+" https://github.com/vim/vim/issues/4738#issuecomment-714609892
+if has('macunix')
+  function! OpenURLUnderCursor()
+    let s:uri = matchstr(getline('.'), '[a-z]*:\/\/[^ >,;()]*')
+    let s:uri = shellescape(s:uri, 1)
+    if s:uri != ''
+      silent exec "!open '".s:uri."'"
+      :redraw!
+    endif
+  endfunction
+  nnoremap gx :call OpenURLUnderCursor()<CR>
+
+endif
 "--------------------------
 " -> Fix unwanted key map
 "--------------------------
