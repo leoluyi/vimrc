@@ -39,6 +39,7 @@ Plug 'Asheq/close-buffers.vim'  " Quickly close (bdelete) several buffers at onc
 Plug 'cespare/vim-toml'  " Vim syntax for TOML
 Plug 'Chiel92/vim-autoformat'  " Formatters (pip install --user black)
 Plug 'dalance/vseq.vim'  " Generating sequential number vertically
+Plug 'danro/rename.vim'  " Rename the current file in the vim buffer + retain relative path
 Plug 'davidhalter/jedi-vim'  " Python IDE (pip install --user jedi)
 Plug 'dbeniamine/cheat.sh-vim'  " A vim plugin to access cheat.sh sheets
 Plug 'dhruvasagar/vim-zoom'  " Toggle zoom in / out individual windows (splits)

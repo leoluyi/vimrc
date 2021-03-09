@@ -132,8 +132,6 @@ endif
 
 autocmd VimEnter *
   \ if exists(':IncSearchMap')
-  \ | execute "map /  <Plug>(incsearch-forward)"
-  \ | execute "map ?  <Plug>(incsearch-backward)"
   \ | execute "map g/ <Plug>(incsearch-stay)"
   \ | execute "map n  <Plug>(incsearch-nohl-n)"
   \ | execute "map N  <Plug>(incsearch-nohl-N)"
@@ -141,10 +139,6 @@ autocmd VimEnter *
   \ | execute "map #  <Plug>(incsearch-nohl-#)"
   \ | execute "map g* <Plug>(incsearch-nohl-g*)"
   \ | execute "map g# <Plug>(incsearch-nohl-g#)"
-  \ | execute 'nnoremap / ms/'
-  \ | execute 'nnoremap ? ms?'
-  \ | execute 'vnoremap / ms/'
-  \ | execute 'vnoremap ? ms?'
   \ | endif
 
 " vim-markdown ----------------------------------------------------------------

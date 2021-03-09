@@ -458,6 +458,9 @@ map <leader>tk <C-w>t<C-w>K
 noremap Zz <c-w>_ \| <c-w>\|
 noremap Zo <c-w>=
 
+""" Switch between buffers
+nnoremap <leader><Tab> <C-^>
+
 """ TAB in general mode will move to text buffer
 nnoremap <M-TAB> :bnext<CR>
 vnoremap <M-TAB> :<C-u>bnext<CR>
@@ -709,17 +712,17 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 " => Custom commands
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" command! -nargs=1 -complete=file -bang Rename call Rename("<args>", "<bang>")
+command! -nargs=0 FoldColumnToggle call FoldColumnToggle()
+command! -nargs=0 HighlightClear call Highlight('')
+command! -nargs=1 Highlight call Highlight(<q-args>)
 command! -range Opencc <line1>,<line2>call Opencc()
 command! -range Reverse <line1>,<line2>call Reverse()
-command! -nargs=0 FoldColumnToggle call FoldColumnToggle()
-command! -nargs=1 -complete=file -bang Rename call Rename("<args>", "<bang>")
-command! -nargs=1 Highlight call Highlight(<q-args>)
-command! -nargs=0 HighlightClear call Highlight('')
-command! WhitespaceTrailingRemove call WhitespaceTrailingRemove()
-command! TrimWhitespace call TrimWhitespace()
-command! EmptyRegisters call EmptyRegisters()
 command! ColorToggle call ColorToggle()
+command! EmptyRegisters call EmptyRegisters()
 command! ToggleTransparentBackground call ToggleTransparent()
+command! TrimWhitespace call TrimWhitespace()
+command! WhitespaceTrailingRemove call WhitespaceTrailingRemove()
 
 nnoremap <leader>tb :ToggleTransparentBackground<CR>
 
